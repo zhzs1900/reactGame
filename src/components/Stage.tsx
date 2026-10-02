@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-// 引入views文件夹下的页面组件：封面、选关和关卡主界面
-import Cover from './views/Cover.tsx';
-import Level from './views/Level.tsx';
-import Game from './views/Game.tsx';
+// 引入views文件夹下的页面组件：封面和关卡主界面
+import Cover from '../views/Cover.tsx';
+import Game from '../views/Game.tsx';
 
-// 引入本地图片素材
-import appIcon from '../resources/UI/icon.png';
+// 引入调试组件
+import Debug from './Debug.tsx';
+import customConfig from '../../customconfig.json';
+
+// 引入本地图片素材与音频启动
+import appIcon from '../../resources/UI/icon.png';
+import { startBgm } from '../utils/sound.ts';
 
 export default function Stage() {
-  // 当前所在界面：cover=封面，level=选关，game=关卡主界面
-  const [page, setPage] = useState<'cover' | 'level' | 'game'>('cover');
+  // 当前所在界面：cover=封面，game=关卡主界面
+  const [page, setPage] = useState<'cover' | 'game'>('cover');
 
   // 记录选中的是第几关
   const [lvl, setLvl] = useState<number>(1);
@@ -27,6 +31,13 @@ export default function Stage() {
       document.head.appendChild(iconTag);
     }
     iconTag.href = appIcon;
+
+    // 用户在任意位置产生初次交互时启动BGM循环
+    const onTouch = () => {
+      startBgm();
+    };
+    window.addEventListener('pointerdown', onTouch, { once: true });
+    return () => window.removeEventListener('pointerdown', onTouch);
   }, []);
 
   // 监听页面高度变化，动态按高度缩小显示，但内部保持720*1280原始分辨率
@@ -51,11 +62,6 @@ export default function Stage() {
   // 开始游戏，直接进关卡
   const toGame = () => {
     setPage('game');
-  };
-
-  // 打开选关列表
-  const toLevel = () => {
-    setPage('level');
   };
 
   // 选中某关后进入关卡
@@ -86,13 +92,13 @@ export default function Stage() {
           }}
         >
           {/* 1. 封面页 */}
-          {page === 'cover' && <Cover toGame={toGame} toLevel={toLevel} />}
-
-          {/* 2. 选关页 */}
-          {page === 'level' && <Level toCover={toCover} pickLvl={pickLvl} lvl={lvl} />}
+          {page === 'cover' && <Cover toGame={toGame} />}
 
           {/* 3. 关卡主界面 */}
           {page === 'game' && <Game toCover={toCover} />}
+
+          {/* 右下角浮动 Debug 调试功能 */}
+          {customConfig.debug && <Debug pickLvl={pickLvl} lvl={lvl} />}
         </div>
       </div>
     </div>
