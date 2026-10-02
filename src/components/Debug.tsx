@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Grid, Zap, Trophy } from 'lucide-react';
+import galleryIcon from '../../resources/UI/icons/icon_gallery.png';
+import levelsIcon from '../../resources/UI/icons/icon_levels.png';
+import eventsIcon from '../../resources/UI/icons/icon_events.png';
+import trophyIcon from '../../resources/UI/icons/icon_trophy.png';
+import indicatorIcon from '../../resources/UI/icons/indicator_debug.png';
 import type { GameResult } from './Result.tsx';
 import closeIcon from '../../resources/UI/icons/icon-3.png';
 import backIcon from '../../resources/UI/icons/icon-12.png';
@@ -47,7 +51,7 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
       <div className="absolute bottom-3 right-3 z-30 select-none">
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 text-white/70 hover:text-white text-xs font-mono border border-white/20 shadow-lg backdrop-blur-xs active:scale-95 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 ui-debug-button text-white/70 hover:text-white text-xs font-mono active:scale-95 transition-all cursor-pointer"
           title="打开调试菜单"
         >
           <img src={toolIcon} alt="" className="w-5 h-5 object-contain" />
@@ -69,21 +73,21 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
         </div>
       )}
       {open && mode !== 'level' && (
-        <div className="absolute inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 select-none">
-          <div className="w-full max-w-[620px] max-h-[92%] bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100">
+        <div className="absolute inset-0 ui-overlay-debug z-50 flex items-center justify-center p-4 select-none">
+          <div className="w-full max-w-[620px] max-h-[92%] ui-panel-debug flex flex-col overflow-hidden text-slate-100">
             {/* 顶部标题栏 */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/60">
+            <div className="flex items-center justify-between px-6 py-4 ui-debug-header">
               <div className="flex items-center gap-2.5">
                 {mode !== 'menu' && (
                   <button
                     onClick={() => setMode('menu')}
-                    className="p-1 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer mr-1"
+                    className="p-1 ui-back-hover text-slate-300 hover:text-white transition-colors cursor-pointer mr-1"
                     title="返回菜单"
                   >
                     <img src={backIcon} alt="" className="w-7 h-7 object-contain" />
                   </button>
                 )}
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                <img src={indicatorIcon} alt="" className="w-2.5 h-2.5 animate-pulse" />
                 <h3 className="font-bold text-lg text-white">
                   {mode === 'menu' ? '调试控制台 (DEBUG)' : mode === 'events' ? '触发事件' : `UI 组件展示 (共 ${uiList.length} 项)`}
                 </h3>
@@ -91,7 +95,7 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
 
               <button
                 onClick={close}
-                className="p-1.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 ui-close-hover text-slate-400 hover:text-white transition-colors cursor-pointer"
                 title="关闭"
               >
                 <img src={closeIcon} alt="" className="w-7 h-7 object-contain" />
@@ -108,11 +112,11 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                 {/* 第一项：UI展示 */}
                 <button
                   onClick={() => setMode('gallery')}
-                  className="flex items-center justify-between p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 hover:border-amber-400/50 transition-all text-left cursor-pointer group shadow-md"
+                  className="flex items-center justify-between p-4 ui-debug-item transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
-                      <ImageIcon className="w-6 h-6" />
+                    <div className="w-11 h-11 ui-debug-icon-slot flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
+                      <img src={galleryIcon} alt="" className="w-6 h-6 object-contain" />
                     </div>
                     <div>
                       <div className="font-bold text-base text-white group-hover:text-amber-300 transition-colors">
@@ -124,7 +128,7 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                     </div>
                   </div>
 
-                  <span className="text-xs text-amber-400 font-mono px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                  <span className="text-xs text-amber-400 font-mono px-2.5 py-1 ui-debug-count">
                     {uiList.length} 张
                   </span>
                 </button>
@@ -133,10 +137,10 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                     playClick();
                     setMode('level');
                   }}
-                  className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 hover:border-amber-400/50 transition-all text-left cursor-pointer group shadow-md"
+                  className="flex items-center gap-3.5 p-4 ui-debug-item transition-all text-left cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
-                    <Grid className="w-6 h-6" />
+                  <div className="w-11 h-11 ui-debug-icon-slot flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
+                    <img src={levelsIcon} alt="" className="w-6 h-6 object-contain" />
                   </div>
                   <div className="font-bold text-base text-white group-hover:text-amber-300 transition-colors">
                     2. 关卡选择
@@ -147,10 +151,10 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                     playClick();
                     setMode('events');
                   }}
-                  className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 hover:border-amber-400/50 transition-all text-left cursor-pointer group shadow-md"
+                  className="flex items-center gap-3.5 p-4 ui-debug-item transition-all text-left cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                    <Zap className="w-6 h-6" />
+                  <div className="w-11 h-11 ui-debug-icon-slot flex items-center justify-center text-amber-400">
+                    <img src={eventsIcon} alt="" className="w-6 h-6 object-contain" />
                   </div>
                   <div className="font-bold text-base text-white group-hover:text-amber-300">3. 触发事件</div>
                 </button>
@@ -165,9 +169,9 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                     close();
                     triggerResult('victory');
                   }}
-                  className="flex items-center gap-4 p-5 rounded-2xl bg-amber-400/10 border border-amber-400/40 text-amber-200 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
+                  className="flex items-center gap-4 p-5 ui-event-victory text-amber-950 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
                 >
-                  <Trophy className="w-8 h-8" />
+                  <img src={trophyIcon} alt="" className="w-8 h-8 object-contain" />
                   1. 触发胜利
                 </button>
                 <button
@@ -176,7 +180,7 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                     close();
                     triggerResult('failure');
                   }}
-                  className="flex items-center gap-4 p-5 rounded-2xl bg-red-400/10 border border-red-400/40 text-red-200 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
+                  className="flex items-center gap-4 p-5 ui-event-failure text-red-200 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
                 >
                   <img src={closeIcon} alt="" className="w-8 h-8 object-contain" />
                   2. 触发失败
@@ -195,19 +199,19 @@ export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
                   {uiList.map((item) => (
                     <div
                       key={item.name}
-                      className="flex flex-col bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 shadow-md"
+                      className="flex flex-col ui-gallery-card p-3.5"
                     >
                       {/* 文件名 */}
-                      <div className="text-xs font-mono font-bold text-amber-300 truncate mb-2.5 pb-1.5 border-b border-slate-800/80">
+                      <div className="text-xs font-mono font-bold text-amber-300 truncate mb-2.5 pb-1.5 ui-gallery-divider">
                         {item.name}
                       </div>
 
                       {/* 图片预览容器，使用暗空格纹理适配透明图 */}
-                      <div className="w-full h-32 rounded-xl bg-slate-900 border border-slate-800/60 flex items-center justify-center p-2 overflow-hidden relative">
+                      <div className="w-full h-32 ui-gallery-slot flex items-center justify-center p-2 overflow-hidden relative">
                         <img
                           src={item.src}
                           alt={item.name}
-                          className="max-w-full max-h-full object-contain drop-shadow"
+                          className="max-w-full max-h-full object-contain"
                           loading="lazy"
                         />
                       </div>

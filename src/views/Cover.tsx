@@ -8,7 +8,7 @@ import customConfig from '../../customconfig.json';
 
 // 引入封面背景与按钮空底图
 import bgCover from '../../resources/UI/coverpage.jpg';
-import btnGold from '../../resources/UI/btn_gold.png';
+import btnGold from '../../resources/UI/buttons/btn_gold.png';
 
 // 引入音效管理
 import { playClick } from '../utils/sound.ts';
@@ -56,7 +56,7 @@ export default function Cover({ toGame, lvl, unlockedLvl, changeLvl }: Props) {
         </h1>
       </div>
 
-      {/* 按钮操作区：使用图片空底图，字和图标用代码写 */}
+      {/* 按钮操作区：使用图片空底图和图标，文字由代码排版 */}
       <div className="flex gap-4 items-center justify-center w-full max-w-[620px] px-8 z-10 mb-14">
         <button
           disabled={lvl <= 1}
@@ -65,7 +65,7 @@ export default function Cover({ toGame, lvl, unlockedLvl, changeLvl }: Props) {
           title="上一关"
           className="w-20 h-20 shrink-0 cursor-pointer active:scale-95 transition-transform disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
         >
-          <img src={leftIcon} alt="" className="w-full h-full object-contain drop-shadow-lg" />
+          <img src={leftIcon} alt="" className="w-full h-full object-contain" />
         </button>
         {/* 开始游戏按钮 */}
         <button
@@ -73,7 +73,7 @@ export default function Cover({ toGame, lvl, unlockedLvl, changeLvl }: Props) {
           aria-label={`开始第${lvl}关`}
           title={`开始第${lvl}关`}
           style={{ backgroundImage: `url(${btnGold})`, backgroundSize: '100% 100%' }}
-          className="w-full h-[100px] flex items-center justify-center gap-3 text-amber-950 font-black text-2xl active:scale-95 transition-transform cursor-pointer drop-shadow-xl"
+          className="w-full h-[100px] flex items-center justify-center gap-3 text-amber-950 font-black text-2xl active:scale-95 transition-transform cursor-pointer"
         >
           <img src={playIcon} alt="" className="w-10 h-10 object-contain" />
           <span>第{lvl}关</span>
@@ -85,7 +85,7 @@ export default function Cover({ toGame, lvl, unlockedLvl, changeLvl }: Props) {
           title="下一关"
           className="w-20 h-20 shrink-0 cursor-pointer active:scale-95 transition-transform disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
         >
-          <img src={rightIcon} alt="" className="w-full h-full object-contain drop-shadow-lg" />
+          <img src={rightIcon} alt="" className="w-full h-full object-contain" />
         </button>
       </div>
 

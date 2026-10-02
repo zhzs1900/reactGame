@@ -4,11 +4,11 @@ import backIcon from '../../resources/UI/icons/icon-12.png';
 // 引入封面背景、图标以及空白按钮与面板底图
 import bgCover from '../../resources/UI/coverpage.jpg';
 import appIcon from '../../resources/UI/icon.png';
-import btnBack from '../../resources/UI/btn_back.png';
-import cardStage from '../../resources/UI/card_stage.png';
-import cardStageOn from '../../resources/UI/card_stage_on.png';
-import panelLevels from '../../resources/UI/panel_levels.png';
-import panelTip from '../../resources/UI/panel_tip.png';
+import btnBack from '../../resources/UI/buttons/btn_back.png';
+import cardStage from '../../resources/UI/buttons/card_stage.png';
+import cardStageOn from '../../resources/UI/buttons/card_stage_on.png';
+import panelLevels from '../../resources/UI/panels/panel_levels.png';
+import panelTip from '../../resources/UI/panels/panel_tip.png';
 
 // 引入音效管理
 import { playClick } from '../utils/sound.ts';
@@ -52,7 +52,7 @@ export default function Level({ toMenu, pickLvl, lvl }: Props) {
           aria-label="返回调试菜单按钮"
           title="返回调试菜单按钮"
           style={{ backgroundImage: `url(${btnBack})`, backgroundSize: '100% 100%' }}
-          className="w-[160px] h-[60px] flex items-center justify-center gap-2 text-amber-100 font-bold text-sm active:scale-95 transition-transform cursor-pointer drop-shadow-md"
+          className="w-[160px] h-[60px] flex items-center justify-center gap-2 text-amber-100 font-bold text-sm active:scale-95 transition-transform cursor-pointer"
         >
           <img src={backIcon} alt="" className="w-7 h-7 object-contain" />
           <span>返回调试菜单</span>
@@ -60,7 +60,7 @@ export default function Level({ toMenu, pickLvl, lvl }: Props) {
 
         {/* 中间图标与标题文字 */}
         <div className="flex items-center gap-3">
-          <img src={appIcon} alt="游戏图标" className="w-10 h-10 rounded-xl shadow-md" />
+          <img src={appIcon} alt="游戏图标" className="w-10 h-10 " />
           <h2 className="text-2xl font-bold text-white tracking-wider drop-shadow-md">选择关卡</h2>
         </div>
 
@@ -89,7 +89,7 @@ export default function Level({ toMenu, pickLvl, lvl }: Props) {
                 backgroundImage: `url(${lvl === item ? cardStageOn : cardStage})`,
                 backgroundSize: '100% 100%',
               }}
-              className="w-full h-[140px] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform drop-shadow-md"
+              className="w-full h-[140px] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform"
             >
               <span className={`text-xs tracking-widest font-mono font-bold ${lvl === item ? 'text-amber-900/80' : 'text-slate-400'}`}>
                 STAGE
@@ -105,7 +105,7 @@ export default function Level({ toMenu, pickLvl, lvl }: Props) {
       {/* 底部提示：使用提示胶囊底板，文字写在上面 */}
       <div
         style={{ backgroundImage: `url(${panelTip})`, backgroundSize: '100% 100%' }}
-        className="relative z-10 w-[340px] h-[44px] flex items-center justify-center text-slate-300 text-sm font-medium drop-shadow-md mb-2"
+        className="relative z-10 w-[340px] h-[44px] flex items-center justify-center text-slate-300 text-sm font-medium mb-2"
       >
         点击对应关卡即可进入
       </div>

@@ -1,21 +1,54 @@
 @import "tailwindcss";
 
-@layer utilities {
-  .text-glow {
-    text-shadow: 0 0 12px rgba(52, 211, 153, 0.6), 0 0 24px rgba(52, 211, 153, 0.3);
-  }
-  .text-glow-amber {
-    text-shadow: 0 0 12px rgba(251, 191, 36, 0.6), 0 0 24px rgba(251, 191, 36, 0.3);
-  }
-  .box-glow {
-    box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
-  }
+/* 组件共用 PNG 底板；纯色背景、遮罩及分隔线由代码渲染。 */
+.ui-debug-button,
+.ui-panel-debug,
+.ui-debug-item,
+.ui-debug-icon-slot,
+.ui-debug-count,
+.ui-event-victory,
+.ui-event-failure,
+.ui-gallery-card,
+.ui-gallery-slot,
+.ui-panel-settings,
+.ui-sound-card,
+.ui-sound-badge,
+.ui-settings-home,
+.ui-result-panel,
+.ui-medallion {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
-/* Custom subtle arcade scanline overlay if desired */
-.arcade-grid {
-  background-size: 20px 20px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
+.ui-background-outer { background-color: #0a0a0a; }
+.ui-background-stage { background-color: #000; }
+.ui-overlay-debug { background-color: rgb(0 0 0 / 85%); }
+.ui-overlay-settings { background-color: rgb(0 0 0 / 75%); }
+.ui-overlay-result { background-color: rgb(0 0 0 / 80%); }
+.ui-debug-button { background-image: url('../resources/UI/buttons/btn_debug.png'); }
+.ui-debug-button:hover { opacity: 0.85; }
+.ui-panel-debug,
+.ui-panel-settings,
+.ui-panel-victory,
+.ui-panel-failure { background-image: url('../resources/UI/panels/panel_common.png'); }
+.ui-debug-header { border-bottom: 1px solid #1e293b; }
+.ui-debug-item { background-image: url('../resources/UI/buttons/btn_dark.png'); }
+.ui-debug-item:hover { opacity: 0.85; }
+.ui-back-hover:hover { background: url('../resources/UI/panels/card_common.png') center / 100% 100% no-repeat; }
+.ui-close-hover:hover { background: url('../resources/UI/panels/card_common.png') center / 100% 100% no-repeat; }
+.ui-debug-icon-slot,
+.ui-gallery-card,
+.ui-gallery-slot,
+.ui-sound-on,
+.ui-sound-off { background-image: url('../resources/UI/panels/card_common.png'); }
+.ui-debug-count,
+.ui-sound-badge-on,
+.ui-sound-badge-off { background-image: url('../resources/UI/panels/badge_common.png'); }
+.ui-event-victory { background-image: url('../resources/UI/buttons/btn_gold.png'); }
+.ui-event-failure { background-image: url('../resources/UI/buttons/btn_dark.png'); }
+.ui-settings-home { background-image: url('../resources/UI/buttons/btn_gold.png'); }
+.ui-medallion-victory,
+.ui-medallion-failure { background-image: url('../resources/UI/panels/medallion_common.png'); }
+
+.ui-settings-divider { border-bottom: 1px solid rgb(251 191 36 / 20%); }
+.ui-gallery-divider { border-bottom: 1px solid rgb(30 41 59 / 80%); }

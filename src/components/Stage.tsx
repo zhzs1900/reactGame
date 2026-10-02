@@ -117,7 +117,7 @@ export default function Stage() {
 
   return (
     // 最外层深色背景，居中展示游戏画面
-    <div className="w-full h-screen bg-neutral-950 flex items-center justify-center overflow-hidden">
+    <div className="w-full h-screen ui-background-outer flex items-center justify-center overflow-hidden">
       {/* 限制外层占位大小，和缩放后的尺寸完全一致，不会出现多余滚动条 */}
       <div
         style={{
@@ -128,7 +128,7 @@ export default function Stage() {
       >
         {/* 内部严格保持 720 * 1280 真实手机分辨率，通过 scale 等比缩放适配视野 */}
         <div
-          className="relative overflow-hidden shadow-2xl bg-black select-none font-sans shrink-0"
+          className="relative overflow-hidden ui-background-stage select-none font-sans shrink-0"
           style={{
             width: '720px',
             height: '1280px',
