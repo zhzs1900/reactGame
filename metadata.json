@@ -1,0 +1,6 @@
+{
+  "name": "益智冒险闯关",
+  "description": "精美冒险闯关小游戏",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
