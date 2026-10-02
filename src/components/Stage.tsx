@@ -6,6 +6,8 @@ import Game from '../views/Game.tsx';
 
 // 引入调试组件
 import Debug from './Debug.tsx';
+import Settings from './Settings.tsx';
+import Result, { type GameResult } from './Result.tsx';
 import customConfig from '../../customconfig.json';
 
 // 引入本地图片素材与音频启动
@@ -18,6 +20,16 @@ export default function Stage() {
 
   // 记录选中的是第几关
   const [lvl, setLvl] = useState<number>(1);
+  const [unlockedLvl, setUnlockedLvl] = useState<number>(() => {
+    try {
+      const saved = Number(localStorage.getItem('unlockedLvl'));
+      return Number.isInteger(saved) && saved >= 1 && saved <= 10 ? saved : 1;
+    } catch {
+      return 1;
+    }
+  });
+  const [result, setResult] = useState<GameResult | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   // 缩放比例，根据当前窗口高度自动算，保证1280高能全屏看全
   const [scale, setScale] = useState<number>(0.75);
@@ -56,7 +68,40 @@ export default function Stage() {
 
   // 回到封面
   const toCover = () => {
+    setResult(null);
+    setLvl((current) => Math.min(current, unlockedLvl));
     setPage('cover');
+  };
+
+  const changeLvl = (n: number) => {
+    if (n >= 1 && n <= unlockedLvl) setLvl(n);
+  };
+
+  const triggerResult = (nextResult: GameResult) => {
+    setPage('game');
+    if (nextResult === 'victory' && lvl === unlockedLvl && lvl < 10) {
+      const nextUnlocked = lvl + 1;
+      setUnlockedLvl(nextUnlocked);
+      try {
+        localStorage.setItem('unlockedLvl', String(nextUnlocked));
+      } catch {
+        // 存储不可用时，本次打开期间仍保留解锁进度。
+      }
+    }
+    setResult(nextResult);
+  };
+
+  const nextLevel = () => {
+    if (lvl >= 10) return;
+    setLvl(lvl + 1);
+    setResult(null);
+    setPage('game');
+  };
+
+  const retryLevel = () => {
+    setAttempt((current) => current + 1);
+    setResult(null);
+    setPage('game');
   };
 
   // 开始游戏，直接进关卡
@@ -92,13 +137,15 @@ export default function Stage() {
           }}
         >
           {/* 1. 封面页 */}
-          {page === 'cover' && <Cover toGame={toGame} />}
+          {page === 'cover' && <Cover toGame={toGame} lvl={lvl} unlockedLvl={unlockedLvl} changeLvl={changeLvl} />}
 
           {/* 3. 关卡主界面 */}
-          {page === 'game' && <Game toCover={toCover} />}
+          {page === 'game' && <Game key={`${lvl}-${attempt}`} />}
 
           {/* 右下角浮动 Debug 调试功能 */}
-          {customConfig.debug && <Debug pickLvl={pickLvl} lvl={lvl} />}
+          {customConfig.debug && <Debug pickLvl={pickLvl} lvl={lvl} triggerResult={triggerResult} />}
+          <Settings inGame={page === 'game'} toCover={toCover} />
+          {result && <Result result={result} lvl={lvl} onNext={nextLevel} onRetry={retryLevel} toCover={toCover} />}
         </div>
       </div>
     </div>

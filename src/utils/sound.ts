@@ -4,6 +4,23 @@ import clickAudio from '../../resources/audio/click.wav';
 
 // 背景音乐全局实例
 let bgmPlayer: HTMLAudioElement | null = null;
+let musicEnabled = true;
+let effectsEnabled = true;
+const activeEffects = new Set<HTMLAudioElement>();
+
+export function setMusicEnabled(enabled: boolean) {
+  musicEnabled = enabled;
+  if (enabled) startBgm();
+  else bgmPlayer?.pause();
+}
+
+export function setEffectsEnabled(enabled: boolean) {
+  effectsEnabled = enabled;
+  if (!enabled) {
+    activeEffects.forEach((snd) => snd.pause());
+    activeEffects.clear();
+  }
+}
 
 // 点击音效对象池，避免连点时声音被掐断
 const clickSound = new Audio(clickAudio);
@@ -11,6 +28,7 @@ clickSound.volume = 0.8;
 
 // 初始化并启动背景音乐
 export function startBgm() {
+  if (!musicEnabled) return;
   if (!bgmPlayer) {
     bgmPlayer = new Audio(bgmAudio);
     bgmPlayer.loop = true;
@@ -27,10 +45,13 @@ export function playClick() {
   try {
     // 首次点击时顺带触发启动BGM
     startBgm();
+    if (!effectsEnabled) return;
     // 克隆音频快速播放，支持高频连点
     const snd = clickSound.cloneNode() as HTMLAudioElement;
     snd.volume = 0.8;
-    snd.play().catch(() => {});
+    activeEffects.add(snd);
+    snd.addEventListener('ended', () => activeEffects.delete(snd), { once: true });
+    snd.play().catch(() => activeEffects.delete(snd));
   } catch {
     // 忽略异常
   }

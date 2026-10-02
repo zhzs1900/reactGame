@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { X, ArrowLeft, Image as ImageIcon, Wrench, Grid } from 'lucide-react';
+import { Image as ImageIcon, Grid, Zap, Trophy } from 'lucide-react';
+import type { GameResult } from './Result.tsx';
+import closeIcon from '../../resources/UI/icons/icon-3.png';
+import backIcon from '../../resources/UI/icons/icon-12.png';
+import toolIcon from '../../resources/UI/icons/icon-14.png';
 import Level from '../views/Level.tsx';
 import { playClick } from '../utils/sound.ts';
 
 // 使用 Vite 动态遍历 resources/UI 下的所有图片文件
 const uiModules = import.meta.glob<{ default: string }>(
-  '../../resources/UI/*.{png,jpg,jpeg,webp}',
+  '../../resources/UI/**/*.{png,jpg,jpeg,webp}',
   { eager: true }
 );
 
@@ -17,12 +21,13 @@ interface UiItem {
 interface Props {
   pickLvl: (n: number) => void;
   lvl: number;
+  triggerResult: (result: GameResult) => void;
 }
 
-export default function Debug({ pickLvl, lvl }: Props) {
-  // 弹窗状态与当前所在模式：menu=选项列表，gallery=UI遍历展示，level=选关
+export default function Debug({ pickLvl, lvl, triggerResult }: Props) {
+  // 弹窗状态与当前所在模式：menu=选项列表，gallery=UI遍历展示，level=选关，events=触发事件
   const [open, setOpen] = useState<boolean>(false);
-  const [mode, setMode] = useState<'menu' | 'gallery' | 'level'>('menu');
+  const [mode, setMode] = useState<'menu' | 'gallery' | 'level' | 'events'>('menu');
 
   // 整理所有遍历到的UI图片列表
   const uiList: UiItem[] = Object.entries(uiModules).map(([path, mod]) => ({
@@ -45,7 +50,7 @@ export default function Debug({ pickLvl, lvl }: Props) {
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 text-white/70 hover:text-white text-xs font-mono border border-white/20 shadow-lg backdrop-blur-xs active:scale-95 transition-all cursor-pointer"
           title="打开调试菜单"
         >
-          <Wrench className="w-3.5 h-3.5 text-amber-400" />
+          <img src={toolIcon} alt="" className="w-5 h-5 object-contain" />
           <span>DEBUG</span>
         </button>
       </div>
@@ -69,18 +74,18 @@ export default function Debug({ pickLvl, lvl }: Props) {
             {/* 顶部标题栏 */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/60">
               <div className="flex items-center gap-2.5">
-                {mode === 'gallery' && (
+                {mode !== 'menu' && (
                   <button
                     onClick={() => setMode('menu')}
                     className="p-1 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer mr-1"
                     title="返回菜单"
                   >
-                    <ArrowLeft className="w-5 h-5" />
+                    <img src={backIcon} alt="" className="w-7 h-7 object-contain" />
                   </button>
                 )}
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <h3 className="font-bold text-lg text-white">
-                  {mode === 'menu' ? '调试控制台 (DEBUG)' : `UI 组件展示 (共 ${uiList.length} 项)`}
+                  {mode === 'menu' ? '调试控制台 (DEBUG)' : mode === 'events' ? '触发事件' : `UI 组件展示 (共 ${uiList.length} 项)`}
                 </h3>
               </div>
 
@@ -89,7 +94,7 @@ export default function Debug({ pickLvl, lvl }: Props) {
                 className="p-1.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 title="关闭"
               >
-                <X className="w-5 h-5" />
+                <img src={closeIcon} alt="" className="w-7 h-7 object-contain" />
               </button>
             </div>
 
@@ -136,6 +141,45 @@ export default function Debug({ pickLvl, lvl }: Props) {
                   <div className="font-bold text-base text-white group-hover:text-amber-300 transition-colors">
                     2. 关卡选择
                   </div>
+                </button>
+                <button
+                  onClick={() => {
+                    playClick();
+                    setMode('events');
+                  }}
+                  className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 hover:border-amber-400/50 transition-all text-left cursor-pointer group shadow-md"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                    <Zap className="w-6 h-6" />
+                  </div>
+                  <div className="font-bold text-base text-white group-hover:text-amber-300">3. 触发事件</div>
+                </button>
+              </div>
+            )}
+
+            {mode === 'events' && (
+              <div className="p-6 flex flex-col gap-4">
+                <button
+                  onClick={() => {
+                    playClick();
+                    close();
+                    triggerResult('victory');
+                  }}
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-amber-400/10 border border-amber-400/40 text-amber-200 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
+                >
+                  <Trophy className="w-8 h-8" />
+                  1. 触发胜利
+                </button>
+                <button
+                  onClick={() => {
+                    playClick();
+                    close();
+                    triggerResult('failure');
+                  }}
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-red-400/10 border border-red-400/40 text-red-200 font-bold text-xl cursor-pointer active:scale-95 transition-transform"
+                >
+                  <img src={closeIcon} alt="" className="w-8 h-8 object-contain" />
+                  2. 触发失败
                 </button>
               </div>
             )}

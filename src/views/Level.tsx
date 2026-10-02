@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import backIcon from '../../resources/UI/icons/icon-12.png';
 
 // 引入封面背景、图标以及空白按钮与面板底图
 import bgCover from '../../resources/UI/coverpage.jpg';
@@ -54,7 +54,7 @@ export default function Level({ toMenu, pickLvl, lvl }: Props) {
           style={{ backgroundImage: `url(${btnBack})`, backgroundSize: '100% 100%' }}
           className="w-[160px] h-[60px] flex items-center justify-center gap-2 text-amber-100 font-bold text-sm active:scale-95 transition-transform cursor-pointer drop-shadow-md"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <img src={backIcon} alt="" className="w-7 h-7 object-contain" />
           <span>返回调试菜单</span>
         </button>
 
