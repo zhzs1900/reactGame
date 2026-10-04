@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import menuIcon from '../../resources/UI/icons/icon-1.png';
 import gearIcon from '../../resources/UI/icons/icon-2.png';
 import closeIcon from '../../resources/UI/icons/icon-3.png';
+import playIcon from '../../resources/UI/icons/icon-4.png';
 import homeIcon from '../../resources/UI/icons/icon-5.png';
 import musicOnIcon from '../../resources/UI/icons/icon-7.png';
 import musicOffIcon from '../../resources/UI/icons/icon-8.png';
@@ -34,7 +36,7 @@ export default function Settings({ inGame, toCover }: Props) {
         title="打开设置"
         className="absolute top-6 right-6 z-40 w-16 h-16 cursor-pointer active:scale-95 transition-transform"
       >
-        <img src={gearIcon} alt="" className="w-full h-full object-contain" />
+        <img src={inGame ? menuIcon : gearIcon} alt="" className="w-full h-full object-contain" />
       </button>
       {open && (
         <div className="absolute inset-0 z-[60] ui-overlay-settings flex items-center justify-center p-8" onClick={close}>
@@ -89,6 +91,31 @@ export default function Settings({ inGame, toCover }: Props) {
                 <span className={`ui-sound-badge px-5 py-1 text-lg ${effects ? 'ui-sound-badge-on text-amber-300' : 'ui-sound-badge-off text-slate-400'}`}>{effects ? '已开启' : '已关闭'}</span>
               </button>
             </div>
+            {!inGame && (
+              <div className="mt-6 flex flex-col gap-5">
+                <button
+                  type="button"
+                  className="w-full py-4 ui-settings-home text-amber-950 font-bold text-2xl cursor-pointer active:scale-95 transition-transform"
+                >
+                  添加桌面
+                </button>
+                <button
+                  type="button"
+                  className="w-full py-4 ui-settings-home text-amber-950 font-bold text-2xl cursor-pointer active:scale-95 transition-transform"
+                >
+                  添加侧边栏
+                </button>
+              </div>
+            )}
+            {inGame && (
+              <button
+                onClick={close}
+                className="mt-6 w-full flex items-center justify-center gap-4 py-4 ui-settings-home text-amber-950 font-bold text-2xl cursor-pointer active:scale-95 transition-transform"
+              >
+                <img src={playIcon} alt="" className="w-16 h-16 object-contain" />
+                继续游戏
+              </button>
+            )}
             {inGame && (
               <button
                 onClick={() => {
